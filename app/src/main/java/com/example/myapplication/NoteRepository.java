@@ -15,9 +15,11 @@ public class NoteRepository {
 
     public NoteRepository(Application application){
         NoteDatabase database = NoteDatabase.getInstance(application);
-        noteDao = database.noteDao();
+        noteDao = database.noteDao(); // assigning noteDao (abstract method) to the database
         allNotes = noteDao.getAllNotes();
     }
+
+    // this is the API we expose to the outside of the db
 
     public void insert(Note note){ //this time we have to provide method body
         new InsertNoteAsyncTask(noteDao).execute(note);
@@ -25,13 +27,15 @@ public class NoteRepository {
     }
 
     public void update(Note note){
-
+        new UpdateNoteAsyncTask(noteDao).execute(note);
     }
 
-    public void delete (Note note){
-
+    public void delete(Note note){
+        new DeleteNoteAsyncTask(noteDao).execute(note);
     }
+
     public void deleteAllNotes(){
+        new DeleteAllNotesAsyncTask(noteDao).execute();
 
     }
 
